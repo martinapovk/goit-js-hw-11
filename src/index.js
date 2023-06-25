@@ -67,8 +67,6 @@ async function submitSearchFormHendle(e) {
     loadMorebtn.enable();
   } catch (err) {
     Notiflix.Report.failure('Error', `${err}`, 'OK');
-    // Notiflix.Notify.failure('Oops something gone wrong..');
-    // console.log(error);
   }
 }
 
