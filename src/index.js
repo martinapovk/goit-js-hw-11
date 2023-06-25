@@ -20,7 +20,8 @@ async function onLoadMore() {
   loadMorebtn.disabled();
   try {
     const { totalHits, hits } = await picsApi.fetchPics();
-    if (100 * picsApi.page > totalHits) {
+    if (40 * (picsApi.page - 1) >= totalHits) {
+      loadMorebtn.hide();
       return Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
       );
