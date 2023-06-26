@@ -32,6 +32,19 @@ async function onLoadMore() {
     Notiflix.Notify.failure('Oops something gone wrong..');
     console.log(error);
   }
+
+  try {
+    const { totalHits, hits } = await picsApi.fetchPics();
+    if (40 * picsApi.page >= totalHits) {
+      loadMorebtn.hide();
+      return Notiflix.Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+  } catch (error) {
+    Notiflix.Notify.failure('Oops something gone wrong..');
+    console.log(error);
+  }
 }
 
 async function submitSearchFormHendle(e) {
@@ -62,11 +75,21 @@ async function submitSearchFormHendle(e) {
       return;
     }
 
+    if (40 * picsApi.page >= totalHits) {
+      loadMorebtn.hide();
+      Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
+      renderMarkup(hits);
+      return Notiflix.Notify.failure(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+
     Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
     renderMarkup(hits);
 
     loadMorebtn.enable();
   } catch (err) {
+    loadMorebtn.hide();
     Notiflix.Report.failure('Error', `${err}`, 'OK');
   }
 }
